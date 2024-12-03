@@ -1,31 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { User } from 'lucide-react'; // Import Lucide User icon
-import { styles } from '../styles';
-import { logo, menu, close } from '../assets';
-import Profile from './Profile'; // Import Profile component
-import { supabase } from '../supabaseClient'; // Import Supabase client
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { User } from "lucide-react"; // Import Lucide User icon
+import { styles } from "../styles";
+import { logo, menu, close } from "../assets";
+import Profile from "./Profile"; // Import Profile component
+import { supabase } from "../supabaseClient"; // Import Supabase client
+import { title } from "framer-motion/client";
 
 const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
-  const [active, setActive] = useState('');
+  const [active, setActive] = useState("");
   const [toggle, setToggle] = useState(false);
   const [showProfile, setShowProfile] = useState(false); // State to control Profile popup
   const [userData, setUserData] = useState(null); // State to hold user data
 
   const newNavLinks = [
-    { id: 'status', title: 'Status', onClick: onStatusClick },
-    { id: 'news', title: 'News', onClick: onNewsClick },
-    { id: 'logout', title: 'Logout', onClick: onLogoutClick },
+    { id: "status", title: "Status", onClick: onStatusClick },
+    { id: "news", title: "News", onClick: onNewsClick },
+    { id: "logout", title: "Logout", onClick: onLogoutClick },
   ];
-
-  
 
   // Fetch user profile data from Supabase
   useEffect(() => {
     const fetchUserProfile = async () => {
       const { data, error } = await supabase.auth.getUser(); // Get authenticated user
       if (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       } else if (data?.user) {
         setUserData(data.user); // Set the user data in state
       }
@@ -37,24 +36,28 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
   // If the user is not logged in yet
   if (!userData) {
     return (
-      <nav className={`${styles.paddingX} w-full flex-items-center py-5 fixed top-0 z-20 bg-primary`}>
+      <nav
+        className={`${styles.paddingX} w-full flex-items-center py-5 fixed top-0 z-20 bg-primary`}
+      >
         <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
           <Link
             to="/"
             className="flex items-center gap-2"
             onClick={() => {
-              setActive('');
+              setActive("");
               window.scrollTo(0, 0);
             }}
           >
             <img src={logo} alt="logo" className="w-9 h-9 object-contain" />
-            <p className="text-black text-[18px] font-Montserrat font-bold cursor-pointer flex">Senior Bridge</p>
+            <p className="text-black text-[18px] font-Montserrat font-bold cursor-pointer flex">
+              Senior Bridge
+            </p>
           </Link>
 
           <ul className="list-none hidden sm:flex flex-row gap-10 items-center">
             {/* User's Name and Profile Icon */}
             <li
-              className="flex items-center gap-2 text-black hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer"
+              className="flex items-center gap-2 text-black hover:text-customPurple text-[18px] font-Montserrat cursor-pointer"
               onClick={() => setShowProfile(true)} // Trigger Profile popup
             >
               <User className="w-6 h-6" /> {/* Profile icon */}
@@ -66,7 +69,7 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
               <li
                 key={link.id}
                 className={`${
-                  active === link.title ? 'text-black' : 'text-black'
+                  active === link.title ? "text-black" : "text-black"
                 } hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer`}
                 onClick={() => {
                   setActive(link.title);
@@ -89,7 +92,7 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
 
             <div
               className={`${
-                !toggle ? 'hidden' : 'flex'
+                !toggle ? "hidden" : "flex"
               } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
             >
               <ul className="list-none flex justify-end items-start flex-col gap-4">
@@ -110,7 +113,7 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
                   <li
                     key={link.id}
                     className={`${
-                      active === link.title ? 'text-black' : 'text-secondary'
+                      active === link.title ? "text-black" : "text-secondary"
                     } font-poppins font-medium cursor-pointer text-[16px]`}
                     onClick={() => {
                       setToggle(false);
@@ -130,28 +133,32 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
   }
 
   return (
-    <nav className={`${styles.paddingX} w-full flex-items-center py-5 fixed top-0 z-20 bg-primary`}>
+    <nav
+      className={`${styles.paddingX} w-full flex-items-center py-5 fixed top-0 z-20 bg-primary`}
+    >
       <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
         <Link
           to="/"
           className="flex items-center gap-2"
           onClick={() => {
-            setActive('');
+            setActive("");
             window.scrollTo(0, 0);
           }}
         >
           <img src={logo} alt="logo" className="w-9 h-9 object-contain" />
-          <p className="text-black text-[18px] font-Montserrat font-bold cursor-pointer flex">Senior Bridge</p>
+          <p className="text-black text-[18px] font-Montserrat font-bold cursor-pointer flex">
+            Senior Bridge
+          </p>
         </Link>
 
         <ul className="list-none hidden sm:flex flex-row gap-10 items-center">
           {/* User's Name and Profile Icon */}
           <li
-            className="flex items-center gap-2 text-black hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer"
+            className="flex items-center gap-2 text-black hover:text-customPurple text-[18px] font-Montserrat cursor-pointer"
             onClick={() => setShowProfile(true)} // Trigger Profile popup
           >
             <User className="w-6 h-6" /> {/* Profile icon */}
-            Hi, {userData.user_metadata?.full_name || 'User'}
+            Hi, {userData.user_metadata?.full_name || "User"}
           </li>
 
           {/* Navigation Links */}
@@ -159,7 +166,7 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
             <li
               key={link.id}
               className={`${
-                active === link.title ? 'text-black' : 'text-black'
+                active === link.title ? "text-black" : "text-black"
               } hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer`}
               onClick={() => {
                 setActive(link.title);
@@ -182,7 +189,7 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
 
           <div
             className={`${
-              !toggle ? 'hidden' : 'flex'
+              !toggle ? "hidden" : "flex"
             } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
           >
             <ul className="list-none flex justify-end items-start flex-col gap-4">
@@ -195,7 +202,7 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
                 }}
               >
                 <User className="w-5 h-5" /> {/* Profile icon */}
-                Hi, {userData.user_metadata?.full_name || 'User'}
+                Hi, {userData.user_metadata?.full_name || "User"}
               </li>
 
               {/* Navigation Links */}
@@ -203,7 +210,7 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
                 <li
                   key={link.id}
                   className={`${
-                    active === link.title ? 'text-black' : 'text-secondary'
+                    active === link.title ? "text-black" : "text-secondary"
                   } font-poppins font-medium cursor-pointer text-[16px]`}
                   onClick={() => {
                     setToggle(false);
@@ -220,7 +227,7 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
       </div>
 
       {/* Show Profile Popup */}
-      {showProfile && <Profile userData={userData} setShowProfile={setShowProfile} />}
+      {showProfile && <Profile onClose={() => setShowProfile(false)} />}
     </nav>
   );
 };

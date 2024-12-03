@@ -39,14 +39,14 @@ const Profile = ({ onClose }) => {
         {/* Decorative background element */}
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-customPurple to-customNeon"></div>
 
-            {/* Close Button */}
-            <button
-            onClick={onClose} // Use the onClose prop to handle closing the modal
-            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200 focus:outline-none"
-            aria-label="Close"
-            >
-            <X className="w-6 h-6" />
-            </button>
+        {/* Close Button */}
+        <button
+        onClick={onClose} // Use the onClose prop to handle closing the modal
+        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200 focus:outline-none"
+        aria-label="Close"
+        >
+        <X className="w-6 h-6" />
+        </button>
             
 
         <motion.div

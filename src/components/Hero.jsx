@@ -196,62 +196,73 @@ const Hero = () => {
 
   return (
     <section className="relative w-full h-screen mx-auto bg-tertiary overflow-hidden">
-      {/* Navbar */}
-      <nav className="fixed top-0 left-0 w-full bg-gray-900 p-4 z-50">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
-          <h1 className="text-white text-2xl font-bold">Senior Bridge</h1>
-          <div className="text-white">
-            {isUserActive ? 'Status: Active' : 'Status: Inactive'}
+      <div className="absolute top-0 right-0 w-2/3 h-full"> 
+        <div className="relative w-full h-full">
+          <div className="hidden md:block absolute top-0 right-0 w-full h-full bg-white rounded-bl-full overflow-hidden">
+            <img
+              src={herobg}
+              alt="Senior and Caregiver"
+              className="object-cover w-full h-full"
+            />
           </div>
+          <div className="hidden md:block absolute top-0 right-0 w-[102%] h-[102%] border-8 border-dashed border-white-400 rounded-bl-full"></div>
         </div>
-      </nav>
-
-      {/* Hero Content */}
-      <div className={`${styles.paddingX} absolute inset-0 max-w-7xl mx-auto flex flex-col justify-between ml-12`}>
-        {/* Hero Text */}
+      </div>
+      
+      <div className={`${styles.paddingX} absolute inset-0 max-w-7xl mx-auto flex flex-col justify-between ml-12`}> 
         <div className="mt-auto z-10">
-          <h1 className={`${styles.heroHeadText} text-yellow-400 font-bold leading-tight`}>EXPERT GUIDANCE</h1>
+          <h1 className={`${styles.heroHeadText} text-yellow-400 font-bold leading-tight`}>
+            EXPERT GUIDANCE
+          </h1>
         </div>
+        
         <div className="mb-32 z-10">
           <p className={`${styles.heroSubText} text-white max-w-md mb-8`}>
-            Our mission is to provide exceptional support and resources tailored specifically for seniors,
-            ensuring they receive the care and connection they deserve.
+            Our mission is to provide exceptional support and resources tailored specifically for seniors, ensuring they receive the care and connection they deserve.
           </p>
+          
           <div className="flex gap-4">
             <button
               onClick={toggleLoginForm}
               type="button"
               className="bg-black-200 py-3 px-6 text-white font-bold rounded-full flex items-center hover:bg-blue-900 transition-colors"
             >
-              <img src={login} alt="login" className="w-6 h-6 mr-2" />
+              <img src={login} alt="login" className="w-6 h-6 mr-2" /> 
               LOGIN
             </button>
+            
             <button
               onClick={toggleSignupForm}
               type="button"
-              className="bg-blue-900 py-3 px-6 text-white font-bold rounded-full flex items-center hover:bg-blue-700 transition-colors"
+              className="bg-black-200 py-3 px-6 text-white font-bold rounded-full flex items-center hover:bg-blue-900 transition-colors"
             >
-              <img src={signup} alt="signup" className="w-6 h-6 mr-2" />
-              SIGN UP
+              <img src={signup} alt="signup" className="w-6 h-6 mr-2" /> 
+              SIGNUP
             </button>
           </div>
         </div>
       </div>
 
-      {/* Background Image */}
-      <div className="absolute inset-0 w-full h-full z-0">
-        <img
-          src={herobg}
-          alt="Background"
-          className="w-full h-full object-cover mix-blend-overlay"
-        />
-      </div>
-
       {/* Login Form */}
       {showLogin && (
-        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-20">
-          <form onSubmit={handleLoginSubmit} className="bg-white p-8 rounded-lg max-w-sm mx-auto">
-            <h2 className="text-2xl font-bold mb-4">Login</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30 backdrop-blur-sm overflow-hidden">
+          <form onSubmit={handleLoginSubmit} className="bg-tertiary p-8 rounded-xl shadow-lg w-full max-w-md relative">
+
+            <h2 className="text-3xl font-bold text-center mt-10">Welcome back!</h2>
+            <p className="text-yellow-200 text-center mb-6">Enter your email and password</p>
+
+            {/* Close Button */}
+            <button
+              onClick={toggleLoginForm}
+              className="absolute top-5 right-8 text-white text-2xl focus:outline-none"
+            >
+              &times; {/* This represents the "X" character */}
+            </button>
+
+            <label className="flex items-center gap-2 mb-1 text-yellow-200 font-medium">
+              Email
+            </label>
+
             <input
               type="email"
               placeholder="Email"
@@ -259,6 +270,11 @@ const Hero = () => {
               onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
               className="w-full p-2 mb-4 border border-gray-300 rounded"
             />
+
+            <label className="flex items-center gap-2 mb-1 text-yellow-200 font-medium">
+              Password
+            </label>
+
             <input
               type="password"
               placeholder="Password"
@@ -266,15 +282,8 @@ const Hero = () => {
               onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
               className="w-full p-2 mb-4 border border-gray-300 rounded"
             />
-            <button type="submit" className="bg-blue-900 py-3 px-6 text-white rounded-full w-full">
+            <button type="submit" className="w-full bg-black-200 text-white py-3 rounded-lg font-bold hover:bg-blue-900 transition">
               Login
-            </button>
-            <button
-              type="button"
-              onClick={toggleLoginForm}
-              className="text-gray-500 mt-4 w-full text-center"
-            >
-              Close
             </button>
           </form>
         </div>
@@ -282,9 +291,22 @@ const Hero = () => {
 
       {/* Signup Form */}
       {showSignup && (
-        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-20">
-          <form onSubmit={handleSignupSubmit} className="bg-white p-8 rounded-lg max-w-sm mx-auto">
-            <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30 backdrop-blur-sm overflow-hidden">
+          <form
+            onSubmit={handleSignupSubmit}
+            className="bg-tertiary p-8 rounded-xl shadow-lg w-full max-w-md relative overflow-y-auto max-h-[80vh]"
+          >
+            <h2 className="text-3xl font-bold text-center mt-10">Create an account.</h2>
+            <p className="text-yellow-200 text-center mb-6">Enter your details to sign up</p>
+
+            {/* Close Button */}
+            <button
+              onClick={toggleSignupForm}
+              className="absolute top-5 right-8 text-white text-2xl focus:outline-none"
+            >
+              &times; {/* This represents the "X" character */}
+            </button>
+
             <input
               type="text"
               placeholder="Full Name"
@@ -387,19 +409,20 @@ const Hero = () => {
               onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })}
               className="w-full p-2 mb-4 border border-gray-300 rounded"
             />
-            <button type="submit" className="bg-blue-900 py-3 px-6 text-white rounded-full w-full">
-              Sign Up
-            </button>
             <button
-              type="button"
-              onClick={toggleSignupForm}
-              className="text-gray-500 mt-4 w-full text-center"
+              type="submit"
+              className="w-full bg-black-200 text-white py-3 rounded-lg font-bold hover:bg-blue-900 transition"
             >
-              Close
+              Sign Up
             </button>
           </form>
         </div>
       )}
+
+      <div className="absolute -top-5 -left-5 w-48 h-48 md:w-48 md:h-48 lg:w-64 lg:h-64 bg-primary rounded-full"></div>
+      <div className="absolute -bottom-32 -left-10 w-32 h-48 md:w-48 md:h-48 lg:w-48 lg:h-48 bg-primary rounded-full"></div>
+      <div className="absolute -top-5 -right-5 w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 bg-primary rounded-full block lg:hidden block md:hidden"></div>
+      <div className="absolute -bottom-32 -right-5 w-48 h-60 md:w-48 md:h-48 lg:w-64 lg:h-64 bg-primary rounded-full block lg:hidden block md:hidden"></div>
     </section>
   );
 };

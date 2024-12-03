@@ -36,7 +36,7 @@ const News = ({ onClose }) => {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 transition-colors duration-200 focus:outline-none"
+          className="absolute top-5 right-8 text-white text-2xl focus:outline-none"
           aria-label="Close"
         >
           <X className="w-5 h-5" />

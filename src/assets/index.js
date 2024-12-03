@@ -39,6 +39,16 @@ import email from "./tech/email.png";
 import password from "./tech/password.png";
 import facebook from "./tech/facebook.png";
 
+import explore1 from "./seniors/explore1.jpeg";
+import explore2 from "./seniors/explore2.jpeg";
+import explore3 from "./seniors/explore3.jpg";
+import explore4 from "./seniors/explore4.jpg";
+import explore5 from "./seniors/explore5.jpg";
+import explore6 from "./seniors/explore6.jpg";
+import explore7 from "./seniors/explore7.jpg";
+import explore8 from "./seniors/explore8.jpg";
+import explore9 from "./seniors/explore9.jpg";
+
 export {
   logo,
   github,
@@ -75,4 +85,13 @@ export {
   email,
   password,
   facebook,
+  explore1,
+  explore2,
+  explore3,
+  explore4,
+  explore5,
+  explore6,
+  explore7,
+  explore8,
+  explore9,
 };
