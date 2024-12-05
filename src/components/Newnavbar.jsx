@@ -1,44 +1,68 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { User } from "lucide-react"; // Import Lucide User icon
 import { styles } from "../styles";
 import { logo, menu, close } from "../assets";
 import Profile from "./Profile"; // Import Profile component
 import { supabase } from "../supabaseClient"; // Import Supabase client
-import { title } from "framer-motion/client";
 
-const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
+const NewNavbar = ({ onStatusClick, onNewsClick }) => {
   const [active, setActive] = useState("");
   const [toggle, setToggle] = useState(false);
   const [showProfile, setShowProfile] = useState(false); // State to control Profile popup
   const [userData, setUserData] = useState(null); // State to hold user data
+  const [userFullName, setUserFullName] = useState(""); // State to hold the full name
 
-  const newNavLinks = [
-    { id: "status", title: "Status", onClick: onStatusClick },
-    { id: "news", title: "News", onClick: onNewsClick },
-    { id: "logout", title: "Logout", onClick: onLogoutClick },
-  ];
+  const navigate = useNavigate(); // To handle navigation
 
   // Fetch user profile data from Supabase
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const { data, error } = await supabase.auth.getUser(); // Get authenticated user
+      const { data, error } = await supabase.auth.getSession(); // Get authenticated user
       if (error) {
         console.error("Error fetching user data:", error);
-      } else if (data?.user) {
-        setUserData(data.user); // Set the user data in state
+      } else if (data?.session?.user) {
+        setUserData(data.session.user); // Set the user data in state
+
+        // Fetch the user's full name from the users table
+        const { data: userMetadata, error: metadataError } = await supabase
+          .from("users")
+          .select("full_name")
+          .eq("id", data.session.user.id)
+          .single();
+
+        if (metadataError) {
+          console.error("Error fetching user metadata:", metadataError);
+        } else {
+          setUserFullName(userMetadata?.full_name || "User");
+        }
       }
     };
 
     fetchUserProfile();
   }, []);
 
+  // Handle Logout
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Logout Error: ", error);
+      } else {
+        console.log("Logged out successfully");
+        // Redirect to the login page
+        window.location.replace("/"); // This replaces the current page with the home page
+      }
+    } catch (error) {
+      console.error("Logout failed:", error.message);
+      alert(`Logout failed: ${error.message}`);
+    }
+  };
+
   // If the user is not logged in yet
   if (!userData) {
     return (
-      <nav
-        className={`${styles.paddingX} w-full flex-items-center py-5 fixed top-0 z-20 bg-primary`}
-      >
+      <nav className={`${styles.paddingX} w-full flex-items-center py-5 fixed top-0 z-20 bg-primary`}>
         <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
           <Link
             to="/"
@@ -55,33 +79,34 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
           </Link>
 
           <ul className="list-none hidden sm:flex flex-row gap-10 items-center">
-            {/* User's Name and Profile Icon */}
             <li
               className="flex items-center gap-2 text-black hover:text-customPurple text-[18px] font-Montserrat cursor-pointer"
-              onClick={() => setShowProfile(true)} // Trigger Profile popup
+              onClick={() => setShowProfile(true)}
             >
-              <User className="w-6 h-6" /> {/* Profile icon */}
-              Hi, Loading...
+              <User className="w-6 h-6" />
+              Loading...
             </li>
 
-            {/* Navigation Links */}
-            {newNavLinks.map((link) => (
-              <li
-                key={link.id}
-                className={`${
-                  active === link.title ? "text-black" : "text-black"
-                } hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer`}
-                onClick={() => {
-                  setActive(link.title);
-                  if (link.onClick) link.onClick();
-                }}
-              >
-                <div>{link.title}</div>
-              </li>
-            ))}
+            <li
+              className="text-black hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer"
+              onClick={onStatusClick}
+            >
+              Status
+            </li>
+            <li
+              className="text-black hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer"
+              onClick={onNewsClick}
+            >
+              News
+            </li>
+            <li
+              className="text-black hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer"
+              onClick={handleLogout}
+            >
+              Logout
+            </li>
           </ul>
 
-          {/* Mobile Menu */}
           <div className="sm:hidden flex flex-1 justify-end items-center">
             <img
               src={toggle ? close : menu}
@@ -89,14 +114,12 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
               className="w-[28px] h-[28px] object-contain"
               onClick={() => setToggle(!toggle)}
             />
-
             <div
               className={`${
                 !toggle ? "hidden" : "flex"
               } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
             >
               <ul className="list-none flex justify-end items-start flex-col gap-4">
-                {/* User's Name and Profile Icon for Mobile */}
                 <li
                   className="flex items-center gap-2 text-black hover:text-customPurple text-[16px] font-poppins font-medium cursor-pointer"
                   onClick={() => {
@@ -104,26 +127,28 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
                     setShowProfile(true);
                   }}
                 >
-                  <User className="w-5 h-5" /> {/* Profile icon */}
-                  Hi, Loading...
+                  <User className="w-5 h-5" />
+                  Loading...
                 </li>
 
-                {/* Navigation Links */}
-                {newNavLinks.map((link) => (
-                  <li
-                    key={link.id}
-                    className={`${
-                      active === link.title ? "text-black" : "text-secondary"
-                    } font-poppins font-medium cursor-pointer text-[16px]`}
-                    onClick={() => {
-                      setToggle(false);
-                      setActive(link.title);
-                      if (link.onClick) link.onClick();
-                    }}
-                  >
-                    <div>{link.title}</div>
-                  </li>
-                ))}
+                <li
+                  className="font-poppins font-medium cursor-pointer text-[16px]"
+                  onClick={onStatusClick}
+                >
+                  Status
+                </li>
+                <li
+                  className="font-poppins font-medium cursor-pointer text-[16px]"
+                  onClick={onNewsClick}
+                >
+                  News
+                </li>
+                <li
+                  className="font-poppins font-medium cursor-pointer text-[16px]"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </li>
               </ul>
             </div>
           </div>
@@ -133,9 +158,7 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
   }
 
   return (
-    <nav
-      className={`${styles.paddingX} w-full flex-items-center py-5 fixed top-0 z-20 bg-primary`}
-    >
+    <nav className={`${styles.paddingX} w-full flex-items-center py-5 fixed top-0 z-20 bg-primary`}>
       <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
         <Link
           to="/"
@@ -152,33 +175,40 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
         </Link>
 
         <ul className="list-none hidden sm:flex flex-row gap-10 items-center">
-          {/* User's Name and Profile Icon */}
           <li
             className="flex items-center gap-2 text-black hover:text-customPurple text-[18px] font-Montserrat cursor-pointer"
-            onClick={() => setShowProfile(true)} // Trigger Profile popup
+            onClick={() => setShowProfile(true)}
           >
-            <User className="w-6 h-6" /> {/* Profile icon */}
-            Hi, {userData.user_metadata?.full_name || "User"}
+            <User className="w-6 h-6" />
+            {userFullName || "User"}
           </li>
 
-          {/* Navigation Links */}
-          {newNavLinks.map((link) => (
-            <li
-              key={link.id}
-              className={`${
-                active === link.title ? "text-black" : "text-black"
-              } hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer`}
-              onClick={() => {
-                setActive(link.title);
-                if (link.onClick) link.onClick();
-              }}
-            >
-              <div>{link.title}</div>
-            </li>
-          ))}
+          <li
+            className={`${
+              active === "Status" ? "text-black" : "text-black"
+            } hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer`}
+            onClick={onStatusClick}
+          >
+            Status
+          </li>
+          <li
+            className={`${
+              active === "News" ? "text-black" : "text-black"
+            } hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer`}
+            onClick={onNewsClick}
+          >
+            News
+          </li>
+          <li
+            className={`${
+              active === "Logout" ? "text-black" : "text-black"
+            } hover:text-customPurple text-[18px] font-Montserrat font-bold cursor-pointer`}
+            onClick={handleLogout}
+          >
+            Logout
+          </li>
         </ul>
 
-        {/* Mobile Menu */}
         <div className="sm:hidden flex flex-1 justify-end items-center">
           <img
             src={toggle ? close : menu}
@@ -186,14 +216,12 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
             className="w-[28px] h-[28px] object-contain"
             onClick={() => setToggle(!toggle)}
           />
-
           <div
             className={`${
               !toggle ? "hidden" : "flex"
             } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
           >
             <ul className="list-none flex justify-end items-start flex-col gap-4">
-              {/* User's Name and Profile Icon for Mobile */}
               <li
                 className="flex items-center gap-2 text-black hover:text-customPurple text-[16px] font-poppins font-medium cursor-pointer"
                 onClick={() => {
@@ -201,33 +229,43 @@ const NewNavbar = ({ onStatusClick, onNewsClick, onLogoutClick }) => {
                   setShowProfile(true);
                 }}
               >
-                <User className="w-5 h-5" /> {/* Profile icon */}
-                Hi, {userData.user_metadata?.full_name || "User"}
+                <User className="w-5 h-5" />
+                {userFullName || "User"}
               </li>
 
-              {/* Navigation Links */}
-              {newNavLinks.map((link) => (
-                <li
-                  key={link.id}
-                  className={`${
-                    active === link.title ? "text-black" : "text-secondary"
-                  } font-poppins font-medium cursor-pointer text-[16px]`}
-                  onClick={() => {
-                    setToggle(false);
-                    setActive(link.title);
-                    if (link.onClick) link.onClick();
-                  }}
-                >
-                  <div>{link.title}</div>
-                </li>
-              ))}
+              <li
+                className="font-poppins font-medium cursor-pointer text-[16px]"
+                onClick={onStatusClick}
+              >
+                Status
+              </li>
+              <li
+                className="font-poppins font-medium cursor-pointer text-[16px]"
+                onClick={onNewsClick}
+              >
+                News
+              </li>
+              <li
+                className="font-poppins font-medium cursor-pointer text-[16px]"
+                onClick={handleLogout}
+              >
+                Logout
+              </li>
             </ul>
           </div>
         </div>
       </div>
 
-      {/* Show Profile Popup */}
-      {showProfile && <Profile onClose={() => setShowProfile(false)} />}
+      {showProfile && (
+        <Profile
+          onClose={() => setShowProfile(false)}
+          setUserData={(data) => {
+            setUserData(data);
+            setUserFullName(data?.full_name || "User"); 
+            window.location.reload(); 
+          }}
+        />
+      )}
     </nav>
   );
 };
