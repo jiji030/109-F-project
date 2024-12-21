@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 import Navbar from "./Newnavbar";
-import Status from "./Status"; 
-import News from "./News"; 
-import ExploreResources from "./ExploreResources"; 
+import Status from "./Status";
+import News from "./News";
+import ExploreResources from "./ExploreResources";
 import { FisherMan } from "./canvas";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 export default function NewPage() {
-  const [showStatus, setShowStatus] = useState(false); 
-  const [showNews, setShowNews] = useState(false); 
+  const [showStatus, setShowStatus] = useState(false);
+  const [showNews, setShowNews] = useState(false);
   const navigate = useNavigate();
 
   // Handle click events for modals
   const handleStatusClick = () => {
-    setShowStatus(true); 
-    setShowNews(false); 
+    setShowStatus(true);
+    setShowNews(false);
   };
 
   const handleNewsClick = () => {
-    setShowNews(true); 
-    setShowStatus(false); 
+    setShowNews(true);
+    setShowStatus(false);
   };
 
   const handleCloseModals = () => {
@@ -28,9 +28,9 @@ export default function NewPage() {
   };
 
   const handleLogoutClick = () => {
-    navigate("/"); 
-    setShowStatus(false); 
-    setShowNews(false); 
+    navigate("/");
+    setShowStatus(false);
+    setShowNews(false);
   };
 
   return (
@@ -41,7 +41,7 @@ export default function NewPage() {
         onNewsClick={handleNewsClick}
         onLogoutClick={handleLogoutClick}
       />
-      
+
       {/* Light Circles for Background Animation */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
@@ -97,6 +97,28 @@ export default function NewPage() {
         </div>
       </div>
 
+      {/* Location Section for Senior Citizen Building */}
+      <div className="py-16 bg-secondary text-white text-center">
+        <h2 className="text-3xl font-bold mb-4">Senior Citizen Building Location</h2>
+        <p className="text-xl mb-4">
+          The Senior Citizen Building of Butuan City is located at the heart of Butuan City, Agusan Del Norte. It is a
+          place dedicated to senior citizens, offering various services, support, and community activities for elderly
+          citizens in the region.
+        </p>
+        <p className="text-lg mb-4">
+          Address: OSCA, XG2H+5PM, Butuan City, Agusan Del Norte
+        </p>
+        {/* Link to Get Directions */}
+        <a
+          href="https://www.google.com/maps/dir//OSCA,+XG2H+5PM,+Butuan+City,+Agusan+Del+Norte"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-yellow-400 hover:text-yellow-300 mt-4 inline-block"
+        >
+          Get Directions
+        </a>
+      </div>
+
       {/* Conditional Rendering for Modals */}
       {showStatus && <Status onClose={handleCloseModals} />}
       {showNews && <News onClose={handleCloseModals} />}
@@ -112,7 +134,7 @@ export default function NewPage() {
             <a
               href="https://drive.google.com/file/d/1MkrMx5uHVx2DNJPqfGsF3pPRRxDJ7Gh7/view?usp=sharing"
               className="text-yellow-400 hover:text-yellow-300"
-              target="_blank" 
+              target="_blank"
               rel="noopener noreferrer"
             >
               About Us

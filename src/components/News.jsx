@@ -54,6 +54,18 @@ const News = ({ onClose }) => {
             </div>
           ))}
         </div>
+
+        {/* Link to the news page */}
+        <div className="mt-4 text-center">
+          <a
+            href="https://www.ncsc.gov.ph/news"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-yellow-400 hover:text-yellow-300 text-sm"
+          >
+            More News and Updates
+          </a>
+        </div>
       </div>
     </div>
   );
