@@ -87,37 +87,53 @@ const Hero = () => {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if the email or password is empty
     if (!loginData.email || !loginData.password) {
-      alert('Please fill out all login fields!');
-      return;
+        alert('Please fill out all login fields!');
+        return;
     }
+
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: loginData.email,
-        password: loginData.password,
-      });
+        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+            email: loginData.email,
+            password: loginData.password,
+        });
 
-      if (error) {
-        alert(`Login failed: ${error.message}`);
-      } else {
-        const { error: updateError } = await supabase
-          .from('users')
-          .update({ status: true })
-          .eq('email', loginData.email);
-
-        if (updateError) {
-          console.error('Failed to update user status:', updateError);
+        // Handle any error during login
+        if (authError) {
+            alert(`Login failed: ${authError.message}`);
         } else {
-          setIsUserActive(true);
-          alert('Login successful!');
-          navigate('/newpage');
+            // Check if the user exists in the 'users' table
+            const { data: userData, error: userError } = await supabase
+                .from('users')
+                .select('*')
+                .eq('email', loginData.email)
+                .single();
+
+            if (userError || !userData) {
+                alert('You need to sign up first. Please create an account.');
+                await supabase.auth.signOut(); // Log out the user to avoid unauthorized access
+            } else {
+                // Set the user's status as active
+                const { error: updateError } = await supabase
+                    .from('users')
+                    .update({ status: true })
+                    .eq('email', loginData.email);
+
+                if (updateError) {
+                    console.error('Failed to update user status:', updateError);
+                } else {
+                    alert('Login successful!');
+                    navigate('/newpage');  // Navigate to another page after successful login
+                }
+            }
         }
-        toggleLoginForm();
-      }
     } catch (err) {
-      console.error('Error during login:', err);
+        console.error('Error during login:', err);
+        alert('An error occurred during login. Please try again later.');
     }
-  };
+};
 
   const handleSignupSubmit = async (e) => {
     e.preventDefault();

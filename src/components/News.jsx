@@ -4,32 +4,37 @@ import { X } from 'lucide-react';
 const News = ({ onClose }) => {
   const newsArticles = [
     {
-      title: "20% Discount on Essential Goods",
-      content:
-        "Senior citizens are entitled to a 20% discount and VAT exemption on medicines, groceries, and other essential goods. Avail these benefits at participating establishments nationwide.",
+      title: "2024 Social Security Cost-of-Living Adjustment",
+      content: "The Social Security Administration announced a 3.2% cost-of-living adjustment (COLA) for 2024. This increase will help beneficiaries keep up with inflation.",
+      date: "2024-01-01",
+      url: "https://www.ssa.gov/news/press/releases/2023/#10-2023-2",
     },
     {
-      title: "Free Medical Check-Ups",
-      content:
-        "Government health centers and selected private clinics offer free annual medical check-ups for senior citizens. This includes basic lab tests, consultations, and health monitoring.",
+      title: "Medicare Changes for 2024",
+      content: "Medicare has announced several changes for 2024, including adjustments to premiums and deductibles. Stay informed about how these changes might affect your healthcare coverage.",
+      date: "2024-01-15",
+      url: "https://www.medicare.gov/blog/2024-medicare-costs",
     },
     {
-      title: "Free Public Transportation",
-      content:
-        "Senior citizens can enjoy free rides on public buses, trains, and selected jeepneys by presenting their Senior Citizen ID. Some local government units also provide additional transportation perks.",
+      title: "New Tax Benefits for Seniors in 2024",
+      content: "The IRS has introduced new tax benefits for seniors in 2024. Learn about increased standard deductions and other tax advantages for older Americans.",
+      date: "2024-02-01",
+      url: "https://www.irs.gov/individuals/seniors-retirees",
     },
     {
-      title: "Discounted Utility Bills",
-      content:
-        "Eligible seniors can apply for a 5% discount on water and electricity bills. This benefit is subject to certain consumption limits and requires proof of eligibility.",
+      title: "2024 Update on Senior Nutrition Programs",
+      content: "The Administration for Community Living has expanded its senior nutrition programs for 2024. Find out about new meal delivery services and community dining options in your area.",
+      date: "2024-02-15",
+      url: "https://acl.gov/programs/health-wellness/nutrition-services",
     },
     {
-      title: "Priority Lanes and Services",
-      content:
-        "Priority lanes for seniors are available in banks, malls, government offices, and hospitals to provide fast and convenient service.",
+      title: "Senior Technology Education Initiatives for 2024",
+      content: "New nationwide initiatives are launching to help seniors bridge the digital divide. Learn about free classes and resources to improve your technology skills.",
+      date: "2024-03-01",
+      url: "https://oats.org/",
     },
   ];
-
+  
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30 backdrop-blur-sm">
       <div className="bg-tertiary p-4 sm:p-6 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] relative overflow-hidden">
@@ -51,6 +56,17 @@ const News = ({ onClose }) => {
             <div key={index} className="p-3 bg-gray-800 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold text-yellow-400">{article.title}</h3>
               <p className="mt-1 text-gray-300 text-sm">{article.content}</p>
+              <div className="mt-2 flex justify-between items-center">
+                <span className="text-gray-400 text-xs">{article.date}</span>
+                <a
+                  href={article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300 text-sm"
+                >
+                  Read more
+                </a>
+              </div>
             </div>
           ))}
         </div>
@@ -72,3 +88,4 @@ const News = ({ onClose }) => {
 };
 
 export default News;
+

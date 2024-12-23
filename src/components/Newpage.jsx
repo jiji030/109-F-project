@@ -5,6 +5,7 @@ import News from "./News";
 import ExploreResources from "./ExploreResources";
 import { FisherMan } from "./canvas";
 import { useNavigate } from "react-router-dom";
+import { MapPin, Navigation } from 'lucide-react';
 
 export default function NewPage() {
   const [showStatus, setShowStatus] = useState(false);
@@ -98,25 +99,48 @@ export default function NewPage() {
       </div>
 
       {/* Location Section for Senior Citizen Building */}
-      <div className="py-16 bg-secondary text-white text-center">
-        <h2 className="text-3xl font-bold mb-4">Senior Citizen Building Location</h2>
-        <p className="text-xl mb-4">
-          The Senior Citizen Building of Butuan City is located at the heart of Butuan City, Agusan Del Norte. It is a
-          place dedicated to senior citizens, offering various services, support, and community activities for elderly
-          citizens in the region.
-        </p>
-        <p className="text-lg mb-4">
-          Address: OSCA, XG2H+5PM, Butuan City, Agusan Del Norte
-        </p>
-        {/* Link to Get Directions */}
-        <a
-          href="https://www.google.com/maps/dir//OSCA,+XG2H+5PM,+Butuan+City,+Agusan+Del+Norte"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-yellow-400 hover:text-yellow-300 mt-4 inline-block"
-        >
-          Get Directions
-        </a>
+      <div className="py-16 bg-secondary text-white">
+        <div className="max-w-6xl mx-auto px-6 md:px-12">
+          <h2 className="text-3xl font-bold mb-8 text-center">Senior Citizen Building Location</h2>
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="md:w-1/2 mb-8 md:mb-0">
+              <div className="bg-tertiary p-6 rounded-lg shadow-lg">
+                <div className="flex items-center mb-4">
+                  <MapPin className="w-6 h-6 text-yellow-400 mr-2" />
+                  <h3 className="text-xl font-semibold">Address</h3>
+                </div>
+                <p className="text-lg mb-4">
+                  OSCA, XG2H+5PM, Butuan City, Agusan Del Norte
+                </p>
+                <div className="flex items-center">
+                  <Navigation className="w-6 h-6 text-yellow-400 mr-2" />
+                  <a
+                    href="https://www.google.com/maps/dir//OSCA,+XG2H+5PM,+Butuan+City,+Agusan+Del+Norte"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-yellow-400 hover:text-yellow-300 text-lg font-medium"
+                  >
+                    Get Directions
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="md:w-1/2">
+              <div className="aspect-w-16 aspect-h-9">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.6476903631584!2d125.53999021478244!3d8.635029093795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3301c0a1a8f8c2a7%3A0x5a0c1d5a0c0a0a0a!2sOSCA%2C%20Butuan%20City%2C%20Agusan%20Del%20Norte!5e0!3m2!1sen!2sph!4v1621234567890!5m2!1sen!2sph"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="rounded-lg shadow-lg"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Conditional Rendering for Modals */}
@@ -161,3 +185,4 @@ export default function NewPage() {
     </section>
   );
 }
+
